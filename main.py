@@ -13,6 +13,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {
+        "message": "Welcome to the Country Outline API.",
+        "usage": "Use the endpoint /api/outline?country=CountryName to fetch the outline.",
+        "example": "/api/outline?country=India"
+    }
+
 @app.get("/api/outline")
 async def get_country_outline(country: str = Query(..., description="Country name to fetch from Wikipedia")):
     url = f"https://en.wikipedia.org/wiki/{country.replace(' ', '_')}"
@@ -35,3 +43,4 @@ async def get_country_outline(country: str = Query(..., description="Country nam
         markdown_outline += f"{'#' * level} {title}\n\n"
 
     return {"outline": markdown_outline}
+
